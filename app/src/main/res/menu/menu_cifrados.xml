@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+<group android:checkableBehavior="single">
+    <item
+        android:id="@+id/nav_cifradozz"
+        android:icon="@drawable/ic_cifrado"
+        android:title="Cifrado ZigZag"
+        android:visible="true"
+        />
+    <item
+        android:id="@+id/nav_descifradozz"
+        android:icon="@drawable/ic_descifrado"
+        android:title="Descifrado ZigZag"
+        android:visible="true"
+        />
+</group>
+</menu>
