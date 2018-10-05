@@ -9,11 +9,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout myLayout;
+    private final int STORAGE_REQUEST_CODE = 1;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -24,13 +26,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,myLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         myLayout.addDrawerListener(toggle);
         toggle.syncState();
+        if(savedInstanceState == null){
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new cifradozzfragment()).commit();
+            Toast.makeText(this,"Cifrado ZigZag",Toast.LENGTH_LONG).show();
+            navigationView.setCheckedItem(R.id.nav_cifradozz); }
 
 
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
+        switch(item.getItemId()){
+            case R.id.nav_cifradozz:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new cifradozzfragment()).commit();
+                Toast.makeText(this,"Cifrado ZigZag",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.nav_descifradozz:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                new descifradozzfragment()).commit();
+                Toast.makeText(this,"Descifrado ZigZag",Toast.LENGTH_LONG).show();
+                break;
+        }
+        myLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @Override
@@ -42,4 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
         }
     }
+
+
+
 }
