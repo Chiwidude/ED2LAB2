@@ -143,7 +143,7 @@ public class cifradozzfragment extends Fragment {
                 }
                 bufferedWriter.flush();
                 bufferedWriter.close();
-                Toast.makeText(getContext(),"Guardado en" +resolver+"/"+name+".lzw", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),"Guardado en" +resolver+"/"+name+".cif", Toast.LENGTH_LONG).show();
                 pathProvider provider = new pathProvider();
                 //se guarda en bitácora
                 //register.AddRegister(newfile.getPath(),provider.getPath(getContext(),selectedFile),"LZW");
@@ -164,6 +164,7 @@ public class cifradozzfragment extends Fragment {
             pathProvider provider = new pathProvider();
             //convierte el uri en una ruta de directorio
             resolver = provider.getFullPathFromTreeUri(selected,getActivity());
+            Toast.makeText(getContext(),"Ruta Seleccionada: " +resolver, Toast.LENGTH_LONG).show();
         }
     }
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)

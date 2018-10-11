@@ -1,9 +1,12 @@
 package android.estructurasii.lab2ed2;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.estructurasii.lab2ed2.ZigZag.algorithmZigZag;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,7 +15,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 
 import permissions.dispatcher.*;
 
@@ -21,6 +36,8 @@ public class descifradozzfragment extends Fragment {
     private static final int READ_REQUEST_CODE = 42;
     private static final int READ_SELECT_CODE = 43;
     String resolver =  "/storage/emulated/0/Compresiones/";
+    algorithmZigZag ZigZag;
+    private int Depht;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -28,20 +45,120 @@ public class descifradozzfragment extends Fragment {
                 false);
         final Button sfile = view.findViewById(R.id.buttondzz);
         final Button sruta = view.findViewById(R.id.buttonrdzz);
+        final EditText Niveles = view.findViewById(R.id.etNiveles);
+        ZigZag = new algorithmZigZag();
         sfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                descifradozzfragmentPermissionsDispatcher.RequestFileWithPermissionCheck(descifradozzfragment.this);
+                if(!Niveles.getText().toString().isEmpty()){
+                    descifradozzfragmentPermissionsDispatcher.RequestFileWithPermissionCheck(descifradozzfragment.this);
+                    Depht = Integer.parseInt(Niveles.getText().toString());
+                } else{
+                    Toast.makeText(getContext(), "Debe Ingresar Número de Niveles", Toast.LENGTH_LONG).show();
+
+                }
             }
         });
         sruta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                descifradozzfragmentPermissionsDispatcher.RequestRouteWithPermissionCheck(descifradozzfragment.this);
+                if(!Niveles.getText().toString().isEmpty()){
+                    //NameToSave = NombreArchivo.getText().toString();
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_OPEN_DOCUMENT_TREE);
+
+                    startActivityForResult(Intent.createChooser(intent,"Seleccione Ruta"),READ_SELECT_CODE);
+
+                } else{
+                    descifradozzfragmentPermissionsDispatcher.RequestRouteWithPermissionCheck(descifradozzfragment.this);
+                    Toast.makeText(getContext(), "Debe Ingresar Número de Niveles", Toast.LENGTH_LONG).show();
+                }
             }
         });
         return view;
     }
+
+    public void onActivityResult(int requestCode, int resultCode,
+                                 Intent resultData) {
+        super.onActivityResult(requestCode, resultCode, resultData);
+        if(requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK)
+        {
+            Uri selectedFile = resultData.getData();
+
+            //-------------------------------------------
+            try {
+                InputStream inputStream = getContext().getContentResolver().openInputStream(selectedFile);
+                BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+                StringBuilder str = new StringBuilder();
+                ArrayList<String> stringsarray = new ArrayList<>();
+                String linea;
+                while((linea = br.readLine()) != null){
+                    String sinSaltosDeLinea = linea.replaceAll("\n","ꡐ");
+                    str.append(linea);
+                    //str.append("ꡐ");
+                    stringsarray.add(linea);
+                }
+                br.close();
+                inputStream.close();
+                StringBuilder sb = new StringBuilder();
+                for (String s : stringsarray)
+                {
+                    sb.append(s);
+                    //sb.append("ꡐ");
+                }
+                //Algorithm.fillDictionary(str.toString());
+                ArrayList<String> resultArray = new ArrayList<>();
+                String decifrado = ZigZag.Decryption(sb.toString(), Depht);
+                resultArray.add(decifrado);
+                //resultArray.add(Algorithm.TabladeDictionary());
+                //for(int i = 0; i<stringsarray.size();i++){
+                //   String temp = Algorithm.compress(stringsarray.get(i));
+                //   temp = ChangeTroubleStrings(temp);
+                //   resultArray.add(temp);
+                //}
+
+                // se convierte el Uri a file para obtener el nombre del archivo
+                File tempfile = new File(selectedFile.getPath());
+                String name = tempfile.getName().replace('.','_'); // nombre de nuevo archivo igual al archivo elegido
+                // archivo a escribir
+                File newfile = new File(resolver,name+".txt");
+
+                FileOutputStream outputStream = new FileOutputStream(newfile);
+                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
+                BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
+                bufferedWriter.write(resultArray.get(0));
+                bufferedWriter.newLine();
+                for(int i = 1; i<resultArray.size(); i++){
+                    bufferedWriter.write(resultArray.get(i).toCharArray());
+                    bufferedWriter.write("ꡐ");
+                }
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                Toast.makeText(getContext(),"Guardado en" +resolver+"/"+name+".txt", Toast.LENGTH_LONG).show();
+                pathProvider provider = new pathProvider();
+                //se guarda en bitácora
+                //register.AddRegister(newfile.getPath(),provider.getPath(getContext(),selectedFile),"LZW");
+
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            //-------------------------------------------
+
+        }
+        if(requestCode == READ_SELECT_CODE && resultCode == Activity.RESULT_OK) {
+            Uri selected = resultData.getData();
+            pathProvider provider = new pathProvider();
+            //convierte el uri en una ruta de directorio
+            resolver = provider.getFullPathFromTreeUri(selected,getActivity());
+            Toast.makeText(getContext(),"Ruta Seleccionada: " +resolver, Toast.LENGTH_LONG).show();
+        }
+    }
+
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     void RequestFile(){
         Intent intent = new Intent();
@@ -66,8 +183,7 @@ public class descifradozzfragment extends Fragment {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-
+        descifradozzfragmentPermissionsDispatcher.onRequestPermissionsResult(this,requestCode,grantResults);
     }
     @OnShowRationale(Manifest.permission.READ_EXTERNAL_STORAGE)
     void ShowRationaleForRead(final PermissionRequest request){

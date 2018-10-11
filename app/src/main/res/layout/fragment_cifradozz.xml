@@ -7,8 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="174dp"
+        android:layout_centerVertical="true"
         android:text="Por favor seleccione un archivo"
         android:textAlignment="center"
         android:textColor="#ffffff"
@@ -18,16 +17,17 @@
         android:id="@+id/buttonczz"
         android:layout_width="240dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="204dp"
+        android:layout_marginBottom="189dp"
         android:text="Seleccione Archivo" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/buttonrzz"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="166dp"
         android:text="Por favor seleccione una ruta para Almacenar el archivo  "
         android:textAlignment="center"
         android:textColor="#ffffff"
@@ -52,9 +52,9 @@
         android:id="@+id/buttonrzz"
         android:layout_width="240dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="179dp"
+        android:layout_marginTop="194dp"
         android:text="Seleccione Ruta" />
 
     <TextView
