@@ -52,7 +52,7 @@ public class cifradozzfragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                if(!Niveles.getText().toString().isEmpty()){
+                if(!Niveles.getText().toString().isEmpty()&& Integer.parseInt(Niveles.getText().toString()) >= 2){
                     cifradozzfragmentPermissionsDispatcher.RequestFileWithPermissionCheck(cifradozzfragment.this);
                     Depht = Integer.parseInt(Niveles.getText().toString());
                     //NameToSave = NombreArchivo.getText().toString();
@@ -62,7 +62,7 @@ public class cifradozzfragment extends Fragment {
                     //intent.setType("*/*");
                     /*startActivityForResult(Intent.createChooser(intent,"Seleccione Archivo"), READ_REQUEST_CODE);*/
                 } else{
-                    Toast.makeText(getContext(), "Debe Ingresar Número de Niveles", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Debe Ingresar Número de Niveles que sea mayor o igual a 2", Toast.LENGTH_LONG).show();
 
                 }
 
@@ -72,7 +72,7 @@ public class cifradozzfragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                if(!Niveles.getText().toString().isEmpty()){
+                if(!Niveles.getText().toString().isEmpty() && Integer.parseInt(Niveles.getText().toString()) >= 2){
                     //NameToSave = NombreArchivo.getText().toString();
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_OPEN_DOCUMENT_TREE);
@@ -80,8 +80,8 @@ public class cifradozzfragment extends Fragment {
                     startActivityForResult(Intent.createChooser(intent,"Seleccione Ruta"),READ_SELECT_CODE);
 
                 } else{
-                    cifradozzfragmentPermissionsDispatcher.RequestRouteWithPermissionCheck(cifradozzfragment.this);
-                    Toast.makeText(getContext(), "Debe Ingresar Número de Niveles", Toast.LENGTH_LONG).show();
+                    //cifradozzfragmentPermissionsDispatcher.RequestRouteWithPermissionCheck(cifradozzfragment.this);
+                    Toast.makeText(getContext(), "Debe Ingresar Número de Niveles que sea mayor o igual a 2", Toast.LENGTH_LONG).show();
                 }
             }
         });
