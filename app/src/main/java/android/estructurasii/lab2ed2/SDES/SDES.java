@@ -137,8 +137,8 @@ public class SDES {
         str.append(ls2);
         keys[1] = permute8(str.toString());
     }
-    public char cipher(char c) {
-        int character =  (int)c;
+    public char cipher(int c) {
+        int character =  c;
         String binarychar = Integer.toBinaryString(character);
         if(binarychar.length() <8) {
             int diference = 8 - binarychar.length();
@@ -184,13 +184,13 @@ public class SDES {
         binarychar = partTowork.concat(part2);
         binarychar = Inversepermute(binarychar);
         //resultado
-        int r = Integer.valueOf(binarychar, 2);
+        int r = Integer.parseInt(binarychar, 2);
 
         return (char)r;
     }
 
-    public char descipher(char c) {
-        int character = (int) c;
+    public char descipher(int c) {
+        int character = c;
         String binarychar = Integer.toBinaryString(character);
         if(binarychar.length() <8) {
             int diference = 8 - binarychar.length();
@@ -236,8 +236,8 @@ public class SDES {
         binarychar = partTowork.concat(part2);
         binarychar = Inversepermute(binarychar);
         //resultado
-        int r = Integer.valueOf(binarychar, 2);
+        int r = Integer.parseInt(binarychar, 2);
 
-        return (char)r;
+        return (char) r;
     }
 }

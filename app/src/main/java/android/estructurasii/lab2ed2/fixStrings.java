@@ -4,7 +4,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class fixStrings {
-    public String ChangeTroubleStrings (String linetochange) {
+    public int ChangeTroubleStrings (int c) {
+        char s = (char)c;
+        String linetochange = String.valueOf(s);
 
         if (linetochange.contains("\n")) {
             linetochange = linetochange.replaceAll(Pattern.quote("\n"), Matcher.quoteReplacement("ꦃ"));
@@ -28,9 +30,12 @@ public class fixStrings {
             linetochange = linetochange.replaceAll(Pattern.quote("\'"), Matcher.quoteReplacement("פֿ"));
         }
 
-        return linetochange;
+        return (int)linetochange.charAt(0);
     }
-    public String RevertChanges(String revert){
+    public int RevertChanges(int c){
+        char s = (char) c;
+        String revert = String.valueOf(s);
+
         if(revert.contains("ꦃ")) {
             revert = revert.replaceAll(Pattern.quote("ꦃ"), Matcher.quoteReplacement("\n"));
         }
@@ -57,6 +62,6 @@ public class fixStrings {
         }
 
 
-        return revert;
+        return (int)revert.charAt(0);
     }
 }

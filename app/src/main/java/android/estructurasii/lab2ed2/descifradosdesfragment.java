@@ -105,33 +105,23 @@ public class descifradosdesfragment extends Fragment {
             if(temp.getName().contains(".sdes")) {
                 try {
                     InputStream inputStream = getContext().getContentResolver().openInputStream(selectedFile);
-                    InputStreamReader reader = new InputStreamReader(inputStream);
-                    BufferedReader read = new BufferedReader(reader);
+                    InputStreamReader reader = new InputStreamReader(inputStream,"UTF-8");
                     File sfile = new File(selectedFile.getPath());
                     String nfile = "descifrado_" + sfile.getName().replaceAll(".sdes", ".txt");
                     File newfile = new File(resolver, nfile);
-                    FileOutputStream stream = new FileOutputStream(newfile);
-                    OutputStreamWriter streamWriter = new OutputStreamWriter(stream);
-                    BufferedWriter writer = new BufferedWriter(streamWriter);
-                    fixStrings fix = new fixStrings();
+                    FileOutputStream outputStream = new FileOutputStream(newfile);
+                    OutputStreamWriter writer = new OutputStreamWriter(outputStream, "UTF-8");
                     algorithm.GenerateKeys(key);
-                    String c;
-                    StringBuilder str = new StringBuilder();
-                    while((c = read.readLine()) != null){
-                        str.append(c);
+                    int c;
+                    while((c = reader.read()) != -1){
+                     char s = algorithm.descipher(c);
+                      writer.write(s);
+
                     }
-                    read.close();
                     reader.close();
-                    StringBuilder stringBuilder = new StringBuilder();
-                    String origin = str.toString();
-                    for(int i = 0; i< origin.length();i++){
-                        char s = algorithm.descipher(origin.charAt(i));
-                        stringBuilder.append(s);
-                    }
-                    String result = fix.RevertChanges(stringBuilder.toString());
-                    writer.write(result);
                     writer.flush();
                     writer.close();
+
 
                     Toast.makeText(getContext(), "Guardado en" + resolver + "/" + nfile, Toast.LENGTH_LONG).show();
                 } catch (FileNotFoundException e) {
