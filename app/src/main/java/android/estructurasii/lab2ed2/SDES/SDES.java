@@ -189,7 +189,7 @@ public class SDES {
         return (char)r;
     }
 
-    public char descipher(int c) {
+    public char descipher(char c) {
         int character = (int) c;
         String binarychar = Integer.toBinaryString(character);
         if(binarychar.length() <8) {
