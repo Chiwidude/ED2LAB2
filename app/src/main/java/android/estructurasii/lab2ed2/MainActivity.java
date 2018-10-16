@@ -48,6 +48,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 new descifradozzfragment()).commit();
                 Toast.makeText(this,"Descifrado ZigZag",Toast.LENGTH_LONG).show();
                 break;
+            case R.id.nav_cifradosdes:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new cifradosdesfragment()).commit();
+                Toast.makeText(this,"Cifrado SDES",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.nav_descifradosdes:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new descifradosdesfragment()).commit();
+                Toast.makeText(this,"Descifrado SDES",Toast.LENGTH_LONG).show();
+                break;
         }
         myLayout.closeDrawer(GravityCompat.START);
         return true;

@@ -22,6 +22,20 @@
         android:visible="true"
         />
     <item android:title="Cifrado SDES">
+        <menu>
+            <item
+                android:id="@+id/nav_cifradosdes"
+                android:icon="@drawable/ic_cifrado"
+                android:title="Cifrar"
+                android:visible="true"
+                />
+            <item
+                android:id="@+id/nav_descifradosdes"
+                android:icon="@drawable/ic_descifrado"
+                android:title="Descifrar"
+                android:visible="true"
+            />
+        </menu>
     </item>
 </group>
 

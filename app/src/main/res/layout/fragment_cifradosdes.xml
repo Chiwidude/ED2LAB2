@@ -41,7 +41,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="34dp"
-        android:text="Descifrado SDES"
+        android:text="Cifrado SDES"
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textColor="#ffffff"
@@ -99,6 +99,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginBottom="229dp"
         android:text="Clave:"
+        android:textColor="#ffffff"
         android:textAlignment="center" />
 
 </RelativeLayout>
