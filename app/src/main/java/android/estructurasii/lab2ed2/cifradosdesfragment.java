@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.estructurasii.lab2ed2.SDES.SDES;
 import android.net.Uri;
 import android.os.Bundle;
-import android.renderscript.ScriptGroup;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,20 +17,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import permissions.dispatcher.*;
 
@@ -107,22 +101,46 @@ public class cifradosdesfragment extends Fragment {
             Uri selectedFile = resultData.getData();
             try {
                 InputStream inputStream = getContext().getContentResolver().openInputStream(selectedFile);
+                InputStream inputStream1 = getContext().getContentResolver().openInputStream(selectedFile);
                 InputStreamReader reader = new InputStreamReader(inputStream,"UTF-8");
+                InputStreamReader reader2 = new InputStreamReader(inputStream1,"Windows-1252");
                 File sfile = new File(selectedFile.getPath());
                 String nfile = sfile.getName().replaceAll(".txt",".sdes");
                 File newfile = new File(resolver,nfile);
                 FileOutputStream outputStream = new FileOutputStream(newfile);
                 OutputStreamWriter writer = new OutputStreamWriter(outputStream,"UTF-8");
                 algorithm.GenerateKeys(key);
+                List<Integer> chars = new ArrayList<>();
+                boolean flag = false;
                 int c;
-                while((c = reader.read()) != -1) {
+                while((c = reader.read()) != -1&& !flag) {
                     if(String.valueOf((char)c).equals("\uFEFF")){
                         continue;
                     }
-                    char s = algorithm.cipher(c);
+                    if(c == 65533){
+                        flag = true;
+                    }
+                    chars.add(c);
+                }
+                if(flag){
+                    int d;
+                    reader.close();
+                    chars.clear();
+                    while((d = reader2.read())!= -1){
+                        if(String.valueOf((char)c).equals("\uFEFF")){
+                            continue;
+                        }
+                        chars.add(d);
+                    }
+                    reader2.close();
+                }else {
+                    reader.close();
+                }
+                for(int a: chars){
+                    char s = algorithm.cipher(a);
                     writer.write(s);
                 }
-                reader.close();
+
                 writer.flush();
                 writer.close();
 

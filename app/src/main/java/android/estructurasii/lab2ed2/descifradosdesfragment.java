@@ -113,10 +113,11 @@ public class descifradosdesfragment extends Fragment {
                     OutputStreamWriter writer = new OutputStreamWriter(outputStream, "UTF-8");
                     algorithm.GenerateKeys(key);
                     int c;
+
                     while((c = reader.read()) != -1){
+
                      char s = algorithm.descipher(c);
                       writer.write(s);
-
                     }
                     reader.close();
                     writer.flush();
