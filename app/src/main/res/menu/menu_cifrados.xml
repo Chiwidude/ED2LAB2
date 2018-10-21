@@ -37,6 +37,22 @@
             />
         </menu>
     </item>
+    <item android:title="Cifrado RSA">
+        <menu>
+            <item
+                android:id="@+id/nav_cifradorsa"
+                android:icon="@drawable/ic_cifrado"
+                android:title="Cifrar"
+                android:visible="true"
+                />
+            <item
+                android:id="@+id/nav_descifradorsa"
+                android:icon="@drawable/ic_descifrado"
+                android:title="Descifrar"
+                android:visible="true"
+                />
+        </menu>
+    </item>
 </group>
 
 

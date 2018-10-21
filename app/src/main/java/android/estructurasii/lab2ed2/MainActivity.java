@@ -58,6 +58,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new descifradosdesfragment()).commit();
                 Toast.makeText(this,"Descifrado SDES",Toast.LENGTH_LONG).show();
                 break;
+            case R.id.nav_cifradorsa:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new cifradorsafragment()).commit();
+            Toast.makeText(this,"Cifrado RSA",Toast.LENGTH_LONG).show();
+            break;
+            case R.id.nav_descifradorsa:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new descifradorsafragment()).commit();
+                Toast.makeText(this,"Descifrado RSA",Toast.LENGTH_LONG).show();
+                break;
         }
         myLayout.closeDrawer(GravityCompat.START);
         return true;
